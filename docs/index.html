@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>N. Hill - Think and Grow Rich</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --bg-elevated: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: rgba(148, 163, 184, 0.35);
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
+      --radius-lg: 18px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #1e293b, #020617 55%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      background: radial-gradient(circle at top, #020617, #020617 40%, #020617);
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(24px);
+    }
+
+    .shell-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+      background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.9),
+        rgba(15, 23, 42, 0.65)
+      );
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+    }
+
+    .dot.red {
+      background: linear-gradient(145deg, #f97373, #f43f5e);
+    }
+    .dot.amber {
+      background: linear-gradient(145deg, #facc15, #f59e0b);
+    }
+    .dot.green {
+      background: linear-gradient(145deg, #4ade80, #22c55e);
+    }
+
+    .shell-title {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .shell-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+    }
+
+    .layout {
+      padding: 22px 22px 24px;
+    }
+
+    .panel-main {
+      background: radial-gradient(circle at top left, #020617, #020617 70%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 18px 18px 16px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: clamp(24px, 3vw, 28px);
+      font-weight: 650;
+      margin: 0 0 6px;
+    }
+
+    .subtitle {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .search-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 100%;
+    }
+
+    .search-block,
+    .tag-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .search-block {
+      flex: 0 0 auto;
+    }
+
+    .tag-block {
+      flex: 0 0 auto;
+    }
+
+    .search-label,
+    .tag-label {
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease,
+        background-color 0.15s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-input:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.8);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag-pill {
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 9px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease,
+        color 0.15s ease, transform 0.1s ease;
+    }
+
+    .tag-pill:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(56, 189, 248, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .tag-pill.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.25);
+      color: var(--text);
+    }
+
+    .list-wrapper {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, #020617, #020617 55%, #0b1220);
+      padding: 8px;
+      max-height: min(60vh, 460px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 4px 6px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.28);
+      margin-bottom: 4px;
+    }
+
+    .list-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .list-counter {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .doc-list {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0 2px;
+    }
+
+    .doc-item + .doc-item {
+      border-top: 1px dashed rgba(51, 65, 85, 0.9);
+    }
+
+    .doc-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 6px;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 9px;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease,
+        border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .doc-link:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.8);
+    }
+
+    .doc-link:hover {
+      background: radial-gradient(circle at left, var(--accent-soft), transparent);
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.7);
+    }
+
+    .doc-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 11px;
+      background: radial-gradient(circle at 20% 0%, #38bdf8, #0ea5e9 40%, #0369a1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #e0f2fe;
+      font-size: 15px;
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+      flex-shrink: 0;
+    }
+
+    .doc-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .doc-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-meta {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .doc-meta-type {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .doc-meta-path {
+      opacity: 0.8;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <main class="shell" aria-label="Nederlands leren document overzicht">
+    <header class="shell-header">
+      <div class="window-dots" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot amber"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="shell-title">Docs hub</div>
+      <div class="shell-badge">HTML · Reading practice</div>
+    </header>
+
+    <section class="layout">
+      <section class="panel-main">
+        <div class="search-row">
+          <div class="tag-block">
+            <span class="tag-label">Filter by tags</span>
+            <div id="tag-filter" class="tag-pills" aria-label="Filter by tags"></div>
+          </div>
+          <div class="search-block">
+            <label class="search-label" for="doc-search">Search by title</label>
+            <input
+              id="doc-search"
+              class="search-input"
+              type="text"
+              placeholder="Start typing to filter documents…"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="list-wrapper" aria-label="Lijst met documenten">
+          <div class="list-header">
+            <span class="list-title">Available texts</span>
+            <span class="list-counter" id="doc-count"></span>
+          </div>
+
+          <ul class="doc-list">
+            <li class="doc-item" data-tags="disc 1">
+              <a class="doc-link" href="N.Hill_-_Think_and_Grow_Rich_-_D1_001.html" target="_blank" rel="noopener noreferrer">
+                <span class="doc-icon">D1</span>
+                <div class="doc-content">
+                  <div class="doc-title"> Disc 1 - 001</div>
+                  <div class="doc-meta">
+                    <span class="doc-meta-type">disc 1</span>
+                    <span class="doc-meta-path">N.Hill_-_Think_and_Grow_Rich_-_D1_001.html</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="doc-item" data-tags="disc 1">
+              <a class="doc-link" href="N.Hill_-_Think_and_Grow_Rich_-_D1_002.html" target="_blank" rel="noopener noreferrer">
+                <span class="doc-icon">D1</span>
+                <div class="doc-content">
+                  <div class="doc-title"> Disc 1 - 002</div>
+                  <div class="doc-meta">
+                    <span class="doc-meta-type">disc 1</span>
+                    <span class="doc-meta-path">N.Hill_-_Think_and_Grow_Rich_-_D1_002.html</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="doc-item" data-tags="disc 1">
+              <a class="doc-link" href="N.Hill_-_Think_and_Grow_Rich_-_D1_003.html" target="_blank" rel="noopener noreferrer">
+                <span class="doc-icon">D1</span>
+                <div class="doc-content">
+                  <div class="doc-title"> Disc 1 - 003</div>
+                  <div class="doc-meta">
+                    <span class="doc-meta-type">disc 1</span>
+                    <span class="doc-meta-path">N.Hill_-_Think_and_Grow_Rich_-_D1_003.html</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </section>
+    </section>
+    <script>
+      (function () {
+        const list = document.querySelector(".doc-list");
+        const items = list
+          ? Array.from(list.querySelectorAll(".doc-item"))
+          : [];
+
+        // sort items alphabetically by visible title text
+        if (list && items.length > 1) {
+          const sorted = items.slice().sort(function (a, b) {
+            const ta = (a.querySelector(".doc-title")?.textContent || "")
+              .trim()
+              .toLowerCase();
+            const tb = (b.querySelector(".doc-title")?.textContent || "")
+              .trim()
+              .toLowerCase();
+            if (ta < tb) return -1;
+            if (ta > tb) return 1;
+            return 0;
+          });
+
+          sorted.forEach(function (item) {
+            list.appendChild(item);
+          });
+        }
+
+        // documents counter element
+        const counterEl = document.getElementById("doc-count");
+
+        // build tag list from data-tags attributes
+        const tagContainer = document.getElementById("tag-filter");
+        const tagSet = new Set();
+        items.forEach(function (item) {
+          const raw = (item.getAttribute("data-tags") || "").split(",");
+          raw
+            .map(function (t) {
+              return t.trim();
+            })
+            .filter(Boolean)
+            .forEach(function (t) {
+              tagSet.add(t);
+            });
+        });
+
+        if (tagContainer && tagSet.size) {
+          Array.from(tagSet)
+            .sort()
+            .forEach(function (tag) {
+              const btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = "tag-pill";
+              btn.textContent = tag;
+              btn.dataset.tag = tag;
+              btn.addEventListener("click", function () {
+                btn.classList.toggle("active");
+                applyFilters();
+              });
+              tagContainer.appendChild(btn);
+            });
+        }
+
+        const input = document.getElementById("doc-search");
+
+        function applyFilters() {
+          const term = (input ? input.value : "").trim().toLowerCase();
+          const selectedTags = tagContainer
+            ? Array.from(
+                tagContainer.querySelectorAll(".tag-pill.active") || []
+              ).map(function (el) {
+                return el.dataset.tag;
+              })
+            : [];
+
+          let visibleCount = 0;
+
+          (list ? list.querySelectorAll(".doc-item") : []).forEach(function (
+            item
+          ) {
+            const titleEl = item.querySelector(".doc-title");
+            const metaEl = item.querySelector(".doc-meta-path");
+            const text =
+              (titleEl?.textContent || "") +
+              " " +
+              (metaEl?.textContent || "");
+
+            const matchTitle =
+              !term || text.toLowerCase().includes(term.toLowerCase());
+
+            const itemTags = (item.getAttribute("data-tags") || "")
+              .split(",")
+              .map(function (t) {
+                return t.trim();
+              })
+              .filter(Boolean);
+
+            const matchTags =
+              !selectedTags.length ||
+              selectedTags.every(function (t) {
+                return itemTags.includes(t);
+              });
+
+            if (matchTitle && matchTags) {
+              item.style.display = "";
+              visibleCount++;
+            } else {
+              item.style.display = "none";
+            }
+          });
+
+          if (counterEl) {
+            const label = visibleCount === 1 ? " document" : " documents";
+            counterEl.textContent = visibleCount + label;
+          }
+        }
+
+        if (input) {
+          input.addEventListener("input", applyFilters);
+        }
+
+        // initial counter and state
+        applyFilters();
+      })();
+    </script>
+  </main>
+</body>
+</html>
